@@ -22,7 +22,7 @@ const PORT = process.env.PORT
 // Global middlewares
 app.use(helmet());
 const corsOptions = {
-  origin: ["http://localhost:5173","mini-project-frontend-sooty.vercel.app"] ,// your frontend domain
+  origin: ["http://localhost:5173","https://mini-project-frontend-sooty.vercel.app"] ,// your frontend domain
   credentials: true, // ✅ allow cookies to be sent
 };
 
