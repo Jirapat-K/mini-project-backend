@@ -3,7 +3,8 @@ import helmet from "helmet";
 import cors from "cors"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
-// import { connectMongo } from "./config/mongo.js";
+import { connectMongo } from "./config/mongo.js";
+import { connectTurso, db } from "./config/turso.js";
 import { createClient } from "@libsql/client"
 import apiRoutes from "./api/v1/routes.js"
 import limiter from "./middleware/rateLimiter.js";
@@ -32,72 +33,26 @@ app.use(cookieParser());
 // Centralized error handling
 app.use(errorHandler);
 
-const db = createClient({
-  url: process.env.TURSO_DB_URL,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
 
-//Initialize the tables (users, notes)
-(async () => {
-  /// Connect to MongoDB via Mongoose
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("Connected to Mongo database ✅");
-  } catch (err) {
-    console.error(`MongoDB connection error: ${err}`);
-    process.exit(1);
-  }
-
-  // Ping Turso
-  try {
-    await db.execute("SELECT 1");
-    console.log("Checked successful communication with Turso database ✅");
-  } catch (err) {
-    console.error("❌ Failed to connect to Turso:", err);
-    process.exit(1);
-  }
-
-
-
-  /// Intialize Turso tables (users, notes)
-  await db.execute(`CREATE TABLE IF NOT EXISTS notes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        content TEXT NOT NULL,
-        tags TEXT, --JSON-encoded array of strings
-        is_pinned INTEGER DEFAULT 0, -- 0 = false, 1 = true
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updateed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        user_id INTEGER
-      );
-      `);
-
-  await db.execute(`CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      email TEXT UNIQUE NOT NULL
-    );
-    `);
-
-})();
 
 app.use("/", apiRoutes(db));
 
-// (async () => {
-//   try {
-//     await connectMongo();
-//     app.listen(PORT, () => {
-//       console.log(`server running on http://localhost:${PORT} ✅`);
-//     });
-//   } catch (error) {
-//     console.error("❌ Startup error:", err);
-//     process.exit(1);
-//   }
-// })();
+(async () => {
+  try {
+    await connectMongo();
+    await connectTurso();
+    app.listen(PORT, () => {
+      console.log(`server running on http://localhost:${PORT} ✅`);
+    });
+  } catch (error) {
+    console.error("❌ Startup error:", err);
+    process.exit(1);
+  }
+})();
 
-app.listen(PORT, () => {
-  console.log(`server running on http://localhost:${PORT} ✅`);
-});
+// app.listen(PORT, () => {
+//   console.log(`server running on http://localhost:${PORT} ✅`);
+// });
 
 // Handle unhandled promise rejections globally
 process.on("unhandledRejection", (err) => {
