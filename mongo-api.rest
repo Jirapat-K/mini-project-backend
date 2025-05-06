@@ -1,0 +1,105 @@
+### Get all users
+GET http://localhost:3030/mongo/users
+
+### Create a new user
+POST http://localhost:3030/mongo/users
+Content-Type: application/json
+
+{
+    "fullName": "Test Person2",
+    "email": "testperson2@example.com",
+    "password": "123456789"
+}
+
+### Update user
+PUT http://localhost:3030/mongo/users/681a3c5ea350a32615e3591d
+Content-Type: application/json
+
+{
+    "fullName": "Tob test",
+    "email": "tob@example.com",
+    "password": "123456789"
+}
+
+### Delete user
+DELETE http://localhost:3030/mongo/users/681a3c5ea350a32615e3591d
+
+### Get all notes
+GET http://localhost:3030/mongo/notes
+
+### Create a new note
+POST http://localhost:3030/mongo/notes
+Content-Type: application/json
+
+{
+    "title": "Test create note",
+    "content": "create",
+    "tags": ["node.js", "express.js"],
+    "isPinned": false,
+    "userId": "6809c5dc804e69c47c928024"
+}
+
+### Update note
+PUT http://localhost:3030/mongo/notes/681a3cc0a350a32615e35924
+Content-Type: application/json
+
+{
+    "title": "Updated note",
+    "content": "Updated content",
+    "tags": ["updated", "tags"],
+    "isPinned": true,
+    "isPublic": false,
+    "userId": "6809c5dc804e69c47c928024"
+}
+
+### Delete note
+DELETE http://localhost:3030/mongo/notes/68102ab783381abe8a4242a6
+
+###
+POST http://localhost:3030/mongo/auth/register
+Content-Type: application/json
+
+{
+    "fullName": "Tob Newbie5",
+    "email": "tob.newbie5@ex.com",
+    "password": "tob123"
+}
+
+###
+POST http://localhost:3030/mongo/auth/login
+Content-Type: application/json
+
+{
+    "email": "tob.newbie4@ex.com",
+    "password": "tob123"
+}
+
+### Add a new note(protect route}
+POST http://localhost:3030/mongo/add-note
+Content-Type:  application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFhM2RlNWEzNTBhMzI2MTVlMzU5MmIiLCJpYXQiOjE3NDY1NTU4ODAsImV4cCI6MTc0NjU1OTQ4MH0.SuPd_C83CcrcHg2RrRSlZGhVjccM4vdZC26suC2-BjI
+
+{
+    "title": "Funnyyyyyy",
+    "content": "This is funny",
+    "tags": ["import","day"]
+}
+
+### GET all notes
+GET http://localhost:3030/mongo/get-all-notes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFhM2RlNWEzNTBhMzI2MTVlMzU5MmIiLCJpYXQiOjE3NDY1NTU4ODAsImV4cCI6MTc0NjU1OTQ4MH0.SuPd_C83CcrcHg2RrRSlZGhVjccM4vdZC26suC2-BjI
+### Search note
+GET http://localhost:3030/mongo/search-note?query=thailand
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFhM2RlNWEzNTBhMzI2MTVlMzU5MmIiLCJpYXQiOjE3NDY1NTU4ODAsImV4cCI6MTc0NjU1OTQ4MH0.SuPd_C83CcrcHg2RrRSlZGhVjccM4vdZC26suC2-BjI
+
+### Add Note auth
+POST  http://localhost:3030/mongo/add-note
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFhM2RlNWEzNTBhMzI2MTVlMzU5MmIiLCJpYXQiOjE3NDY1NTU4ODAsImV4cCI6MTc0NjU1OTQ4MH0.SuPd_C83CcrcHg2RrRSlZGhVjccM4vdZC26suC2-BjI
+
+{
+    "title": "sua8",
+    "content": "sua is funny",
+    "tags": ["sua"]
+}
+
