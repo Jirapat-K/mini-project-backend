@@ -3,7 +3,7 @@ import helmet from "helmet";
 import cors from "cors"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
-import { connectMongo } from "./config/mongo.js";
+// import { connectMongo } from "./config/mongo.js";
 import { createClient } from "@libsql/client"
 import apiRoutes from "./api/v1/routes.js"
 import limiter from "./middleware/rateLimiter.js";
@@ -83,17 +83,21 @@ const db = createClient({
 
 app.use("/", apiRoutes(db));
 
-(async () => {
-  try {
-    await connectMongo();
-    app.listen(PORT, () => {
-      console.log(`server running on http://localhost:${PORT} ✅`);
-    });
-  } catch (error) {
-    console.error("❌ Startup error:", err);
-    process.exit(1);
-  }
-})();
+// (async () => {
+//   try {
+//     await connectMongo();
+//     app.listen(PORT, () => {
+//       console.log(`server running on http://localhost:${PORT} ✅`);
+//     });
+//   } catch (error) {
+//     console.error("❌ Startup error:", err);
+//     process.exit(1);
+//   }
+// })();
+
+app.listen(PORT, () => {
+  console.log(`server running on http://localhost:${PORT} ✅`);
+});
 
 // Handle unhandled promise rejections globally
 process.on("unhandledRejection", (err) => {
